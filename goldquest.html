@@ -83,8 +83,7 @@
         <button onclick="crashHost()">Crash Host</button>
         <button onclick="freezeScoreboard()">Freeze Scoreboard</button>
         <button onclick="stealGold()">Steal Gold From Player</button>
-        <button onclick="setPlayerGold()">Set Player's Gold</button>
-        <button onclick="setGold()">Set Gold</button>
+        <button onclick="setBotGold()">Set Bot's Gold</button>
         <button onclick="sendAdText()">Send Ad Text</button>
         <button onclick="floodAlertBox()">Flood Alert Box</button>
         <button onclick="leaveGame()">Leave Game</button>
@@ -119,6 +118,7 @@
         let gameId = "";
         let botName = "";
         let selectedSkin = "";
+        let db = null;
 
         // ✅ Logging Function
         function log(message) {
@@ -166,7 +166,7 @@
                 const auth = getAuth(app);
                 await signInWithCustomToken(auth, data.fbToken);
 
-                const db = getDatabase(app);
+                db = getDatabase(app);
                 await set(ref(db, `${gameId}/c/${botName}`), {
                     b: selectedSkin,
                     rt: true
@@ -178,13 +178,26 @@
             }
         }
 
+        // ✅ Set Bot's Gold
+        async function setBotGold() {
+            if (!getGameInfo()) return;
+            const amount = prompt("Set bot's gold to?");
+            if (!amount) return;
+
+            try {
+                await set(ref(db, `${gameId}/c/${botName}/g`), amount);
+                log(`✅ Bot ${botName}'s gold set to ${amount}`);
+            } catch (error) {
+                log(`❌ Error setting gold: ${error.message}`);
+            }
+        }
+
         // ✅ Expose Functions to Window
         window.joinBot = joinBot;
+        window.setBotGold = setBotGold;
         window.crashHost = () => log("🔥 Crash Host Activated");
         window.freezeScoreboard = () => log("❄️ Freeze Scoreboard Activated");
         window.stealGold = () => log("💰 Steal Gold Activated");
-        window.setPlayerGold = () => log("✨ Set Player Gold Activated");
-        window.setGold = () => log("🔔 Set Gold Activated");
         window.sendAdText = () => log("📢 Send Ad Text Activated");
         window.floodAlertBox = () => log("🌊 Flood Alert Box Activated");
         window.leaveGame = () => log("🚪 Left the game.");
