@@ -33,12 +33,15 @@
         <div class="log" id="log">Waiting for input...</div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
         async function joinSameLobby() {
             const gameId = document.getElementById("gcode").value.trim();
             const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
-
             let logBox = document.getElementById("log");
             logBox.innerHTML = "";
 
@@ -61,33 +64,47 @@
                 let botName = `${baseUsername}${i}`;
 
                 try {
+                    // Step 1: Get Firebase Token from API
                     let response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ id: gameId, name: botName })
                     });
 
-                    let textResponse = await response.text(); // Log raw response
-                    console.log("Raw Response:", textResponse);
-
-                    let result;
-                    try {
-                        result = JSON.parse(textResponse);
-                    } catch (e) {
-                        log(`⚠️ Bot ${botName} response is not valid JSON.`);
+                    let data = await response.json();
+                    if (!data.success) {
+                        log(`⚠️ Bot ${botName} failed: ${data.msg || "Unknown Error"}`);
                         continue;
                     }
 
-                    if (result.success) {
-                        log(`✅ Bot ${botName} joined successfully!`);
-                    } else {
-                        log(`⚠️ Bot ${botName} failed: ${result.msg || "Unknown Error"}`);
-                    }
+                    // Step 2: Connect to Firebase
+                    const liveApp = initializeApp({
+                        apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
+                        authDomain: "blooket-2020.firebaseapp.com",
+                        projectId: "blooket-2020",
+                        storageBucket: "blooket-2020.appspot.com",
+                        messagingSenderId: "741533559105",
+                        appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
+                        measurementId: "G-S3H5NGN10Z",
+                        databaseURL: data.fbShardURL
+                    });
+
+                    const auth = getAuth(liveApp);
+                    await signInWithCustomToken(auth, data.fbToken);
+                    const db = getDatabase(liveApp);
+
+                    // Step 3: Register Bot in Firebase
+                    await set(ref(db, `${gameId}/c/${botName}`), { 
+                        b: "Rainbow Astronaut",
+                        rt: true
+                    });
+
+                    log(`✅ Bot ${botName} joined successfully!`);
                 } catch (error) {
                     log(`❌ Error sending bot ${botName}: ${error.message}`);
                 }
 
-                await new Promise(r => setTimeout(r, 1000)); // Increased delay to avoid detection
+                await new Promise(r => setTimeout(r, 1000)); // Increased delay to prevent spam detection
             }
 
             log("🎉 All bots sent!");
