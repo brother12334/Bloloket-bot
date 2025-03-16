@@ -81,8 +81,7 @@
             "White Peacock", "Tiger Zebra", "Teal Platypus", "Red Astronaut", "Orange Astronaut",
             "Yellow Astronaut", "Lime Astronaut", "Green Astronaut", "Cyan Astronaut", "Blue Astronaut",
             "Pink Astronaut", "Purple Astronaut", "Brown Astronaut", "Black Astronaut", "Lovely Planet",
-            "Lovely Peacock", "Haunted Pumpkin", "Pumpkin Cookie", "Ghost Cookie", "Red Gummy Bear",
-            "Blue Gummy Bear", "Green Gummy Bear", "Chick Chicken", "Chicken Chick", "Raccoon Bandit",
+            "Lovely Peacock", "Haunted Pumpkin", "Pumpkin Cookie", "Ghost Cookie", "Red Gummy Bear","Blue Gummy Bear", "Green Gummy Bear", "Chick Chicken", "Chicken Chick", "Raccoon Bandit",
             "Owl Sheriff", "Vampire Frog", "Pumpkin King", "Leprechaun", "Anaconda Wizard", "Spooky Pumpkin",
             "Spooky Mummy", "Agent Owl", "Master Elf", "Party Pig", "Wise Owl", "Spooky Ghost",
             "Phantom King", "Tim the Alien", "Rainbow Astronaut", "Hamsta Claus", "Light Blue", "Black",
@@ -99,8 +98,10 @@
             skinSelect.appendChild(option);
         });
 
+        let gameId; // Declare gameId outside of joinSameLobby
+
         async function joinSameLobby() {
-            //const gameId = document.getElementById("gcode").value.trim();
+            gameId = document.getElementById("gcode").value.trim(); // Assign value here
             const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
             const selectedSkin = document.getElementById("skinSelect").value;
@@ -168,7 +169,7 @@
             }
 
             log("🎉 All bots sent!");
-            showCheats(gameId); // Show cheats after bots are sent
+            showCheats(gameId); // Now gameId is accessible
         }
 
         function log(message) {
@@ -221,7 +222,7 @@
                         { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'g') },
                     ],
                     Candy: [
-                        { type: "button", name: "Crash host(candy)", action: (a) => setUserVal(gameId, "g/t", "t", a) },
+                        { type: "button", name:"Crash host(candy)", action: (a) => setUserVal(gameId, "g/t", "t", a) },
                         { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
                         { type: "select", name: "Steal Candy From", computed: (sel) => getUsers(gameData, sel), action: (d) => stealCandy(gameId, d) },
                         { type: "select", name: "Set Player's Candy", computed: (sel) => getUsers(gameData, sel), action: (d) => setPlayerCandy(gameId, d) },
@@ -230,7 +231,7 @@
                         { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'g') },
                     ],
                     Defense2: [
-                        { type:"button", name: "Crash host(defense2)", action: (
+                        { type: "button", name: "Crash host(defense2)", action: (
                             a) => setUserVal(gameId, "d/t", "t", a) },
                         { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "r") },
                         { type: "input", name: "Set Damage", action: (amt) => setUserVal(gameId, "d", amt) },
@@ -315,8 +316,7 @@
             let element;
             if (cheat.type === "button") {
                 element = document.createElement("button");
-                element.textContent = cheat.name;
-                element.addEventListener("click", () => cheat.action(element));
+                element.textContent = cheat.name;element.addEventListener("click", () => cheat.action(element));
             } else if (cheat.type === "input") {
                 element = document.createElement("input");
                 element.placeholder = cheat.name;
