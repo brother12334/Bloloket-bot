@@ -80,9 +80,8 @@
         <button onclick="joinBot()">🚀 Join Bot</button>
         
         <!-- 🔥 Cheat Buttons -->
-        <button onclick="crashHost()">Crash Host</button>
-        <button onclick="freezeScoreboard()">Freeze Scoreboard</button>
-        <button onclick="stealGold()">Steal Gold From Player</button>
+        <button onclick="crashHost(this)">Crash Host</button>
+        <button onclick="freezeScoreboard(this)">Freeze Scoreboard</button>
         <button onclick="setBotGold()">Set Bot's Gold</button>
         <button onclick="sendAdText()">Send Ad Text</button>
         <button onclick="floodAlertBox()">Flood Alert Box</button>
@@ -119,6 +118,7 @@
         let botName = "";
         let selectedSkin = "";
         let db = null;
+        let isScoreboardFrozen = false;
 
         // ✅ Logging Function
         function log(message) {
@@ -178,29 +178,27 @@
             }
         }
 
-        // ✅ Set Bot's Gold
-        async function setBotGold() {
-            if (!getGameInfo()) return;
-            const amount = prompt("Set bot's gold to?");
-            if (!amount) return;
+        // ✅ Crash Host
+        async function crashHost(button) {
+            if (!db) return log("❌ Bot not connected");
+            await set(ref(db, `${gameId}/c/${botName}/g/t`), "t");
+            button.innerText = "Crashing...";
+            log("🔥 Crashing host...");
+        }
 
-            try {
-                await set(ref(db, `${gameId}/c/${botName}/g`), amount);
-                log(`✅ Bot ${botName}'s gold set to ${amount}`);
-            } catch (error) {
-                log(`❌ Error setting gold: ${error.message}`);
-            }
+        // ✅ Freeze/Unfreeze Scoreboard
+        async function freezeScoreboard(button) {
+            if (!db) return log("❌ Bot not connected");
+            isScoreboardFrozen = !isScoreboardFrozen;
+            await set(ref(db, `${gameId}/tat/t`), isScoreboardFrozen ? "t" : "f");
+            button.innerText = isScoreboardFrozen ? "Unfreeze Scoreboard" : "Freeze Scoreboard";
+            log(`❄️ Scoreboard ${isScoreboardFrozen ? "frozen" : "unfrozen"}`);
         }
 
         // ✅ Expose Functions to Window
         window.joinBot = joinBot;
-        window.setBotGold = setBotGold;
-        window.crashHost = () => log("🔥 Crash Host Activated");
-        window.freezeScoreboard = () => log("❄️ Freeze Scoreboard Activated");
-        window.stealGold = () => log("💰 Steal Gold Activated");
-        window.sendAdText = () => log("📢 Send Ad Text Activated");
-        window.floodAlertBox = () => log("🌊 Flood Alert Box Activated");
-        window.leaveGame = () => log("🚪 Left the game.");
+        window.crashHost = crashHost;
+        window.freezeScoreboard = freezeScoreboard;
     </script>
 </body>
 </html>
