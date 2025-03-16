@@ -27,13 +27,35 @@
         <p>Number of Bots:</p>
         <input type="number" id="numJoins" placeholder="How many bots?" min="1" max="100">
         
-        <p>Select Bot Skin (First Bot Skin Only, Rest Auto-Assigned):</p>
+        <p>Select Bot Skin:</p>
         <select id="skinSelect">
             <option value="Rainbow Astronaut">Rainbow Astronaut</option>
             <option value="Pirate">Pirate</option>
             <option value="Alien">Alien</option>
             <option value="Skeleton">Skeleton</option>
-            <!-- Add more skins here as needed -->
+            <option value="Dragon">Dragon</option>
+            <option value="Viking">Viking</option>
+            <option value="Shark">Shark</option>
+            <option value="Unicorn">Unicorn</option>
+            <option value="Ninja">Ninja</option>
+            <option value="Cowboy">Cowboy</option>
+            <option value="Princess">Princess</option>
+            <option value="Wizard">Wizard</option>
+            <option value="Ghost">Ghost</option>
+            <option value="Zombie">Zombie</option>
+            <option value="Penguin">Penguin</option>
+            <option value="Cyborg">Cyborg</option>
+            <option value="King">King</option>
+            <option value="Queen">Queen</option>
+            <option value="Soldier">Soldier</option>
+            <option value="Robot">Robot</option>
+            <option value="Grim Reaper">Grim Reaper</option>
+            <option value="Vampire">Vampire</option>
+            <option value="Wizard">Wizard</option>
+            <option value="Knight">Knight</option>
+            <option value="Mummy">Mummy</option>
+            <option value="Pumpkin">Pumpkin</option>
+            <!-- Add more skins here if needed -->
         </select>
 
         <button id="sendBotsBtn">🚀 Send Bots!</button>
@@ -42,28 +64,19 @@
         <div class="log" id="log">Waiting for input...</div>
     </div>
 
-    <!-- Move the script here, right before the closing </body> tag -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
         async function joinSameLobby() {
-            console.log("Button clicked!");  // Log the button click
-            
             const gameId = document.getElementById("gcode").value.trim();
             const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
-            const firstBotSkin = document.getElementById("skinSelect").value;  // Get selected skin for first bot
-            const skins = ["Rainbow Astronaut", "Pirate", "Alien", "Skeleton"];  // Array of skins
+            const selectedSkin = document.getElementById("skinSelect").value; // Get selected skin
             
             let logBox = document.getElementById("log");
             logBox.innerHTML = "";
-
-            console.log("Game Code:", gameId);  // Log game code
-            console.log("Bot Name Prefix:", baseUsername);  // Log bot name prefix
-            console.log("Number of Bots:", numJoins);  // Log number of bots
-            console.log("Selected First Bot Skin:", firstBotSkin);  // Log selected skin for first bot
 
             if (!gameId || gameId.length !== 7) {
                 log("❌ Invalid Game Code! Must be 7 digits.");
@@ -82,11 +95,7 @@
 
             for (let i = 1; i <= numJoins; i++) {
                 let botName = `${baseUsername}${i}`;
-                let botSkin = skins[(i - 1) % skins.length]; // Cycle through skins
-                if (i === 1) botSkin = firstBotSkin;  // Set first bot's skin to the selected one
 
-                console.log(`Sending bot: ${botName} with skin: ${botSkin}`);  // Log bot being sent
-                
                 try {
                     // Step 1: Get Firebase Token from API
                     let response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
@@ -96,8 +105,6 @@
                     });
 
                     let data = await response.json();
-                    console.log("API Response:", data);  // Log the API response
-
                     if (!data.success) {
                         log(`⚠️ Bot ${botName} failed: ${data.msg || "Unknown Error"}`);
                         continue;
@@ -121,11 +128,11 @@
 
                     // Step 3: Register Bot in Firebase with selected skin
                     await set(ref(db, `${gameId}/c/${botName}`), { 
-                        b: botSkin,  // Use the selected skin for each bot
+                        b: selectedSkin,  // Use the selected skin for all bots
                         rt: true
                     });
 
-                    log(`✅ Bot ${botName} joined successfully with skin ${botSkin}!`);
+                    log(`✅ Bot ${botName} joined successfully with skin ${selectedSkin}!`);
                 } catch (error) {
                     log(`❌ Error sending bot ${botName}: ${error.message}`);
                 }
