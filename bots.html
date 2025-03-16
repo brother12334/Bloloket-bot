@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blooket Bot Spammer</title>
+    <title>Blooket Bot Sender</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,7 +54,7 @@
     </style>
 </head>
 <body>
-    <h1>🔥 Blooket Bot Spammer 🔥</h1>
+    <h1>🔥 Blooket Bot Sender 🔥</h1>
     <div class="container">
         <p>Enter Game Code:</p>
         <input type="text" id="gameCode" placeholder="7-digit game code">
@@ -76,7 +76,6 @@
             let gameCode = document.getElementById("gameCode").value.trim();
             let botPrefix = document.getElementById("botName").value.trim();
             let botCount = parseInt(document.getElementById("botCount").value);
-
             let logBox = document.getElementById("log");
             logBox.innerHTML = "";
 
@@ -94,12 +93,12 @@
             }
 
             log(`🎮 Joining Game ${gameCode} with ${botCount} bots...`);
-            
+
             for (let i = 1; i <= botCount; i++) {
                 let botName = `${botPrefix}_${i}`;
                 
                 try {
-                    let response = await fetch("https://blooketbot.glitch.me/join", {
+                    let response = await fetch("https://blooket.schoolcheats.net/api/proxy/blooketfb/c/firebase/join", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ id: gameCode, name: botName })
@@ -129,4 +128,3 @@
     </script>
 </body>
 </html>
-
