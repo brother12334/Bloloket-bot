@@ -58,7 +58,7 @@
             log(`🎮 Joining Game ${gameId} with ${numJoins} bots...`);
             
             for (let i = 1; i <= numJoins; i++) {
-                let botName = `${baseUsername}_${i}_${Date.now()}`; // Add timestamp to make name unique
+                let botName = `${baseUsername}${i}`; // Shorten bot name
 
                 try {
                     let response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
