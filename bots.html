@@ -29,33 +29,7 @@
         
         <p>Select Bot Skin:</p>
         <select id="skinSelect">
-            <option value="Rainbow Astronaut">Rainbow Astronaut</option>
-            <option value="Pirate">Pirate</option>
-            <option value="Alien">Alien</option>
-            <option value="Skeleton">Skeleton</option>
-            <option value="Dragon">Dragon</option>
-            <option value="Viking">Viking</option>
-            <option value="Shark">Shark</option>
-            <option value="Unicorn">Unicorn</option>
-            <option value="Ninja">Ninja</option>
-            <option value="Cowboy">Cowboy</option>
-            <option value="Princess">Princess</option>
-            <option value="Wizard">Wizard</option>
-            <option value="Ghost">Ghost</option>
-            <option value="Zombie">Zombie</option>
-            <option value="Penguin">Penguin</option>
-            <option value="Cyborg">Cyborg</option>
-            <option value="King">King</option>
-            <option value="Queen">Queen</option>
-            <option value="Soldier">Soldier</option>
-            <option value="Robot">Robot</option>
-            <option value="Grim Reaper">Grim Reaper</option>
-            <option value="Vampire">Vampire</option>
-            <option value="Wizard">Wizard</option>
-            <option value="Knight">Knight</option>
-            <option value="Mummy">Mummy</option>
-            <option value="Pumpkin">Pumpkin</option>
-            <!-- Add more skins here if needed -->
+            <!-- Dynamically add all skins from blooks -->
         </select>
 
         <button id="sendBotsBtn">🚀 Send Bots!</button>
@@ -68,6 +42,58 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        // Add skins to dropdown dynamically
+        var blooks = [
+          "Chick", "Chicken", "Cow", "Goat", "Horse", "Pig", "Sheep", "Duck", "Alpaca", "Dog",
+          "Cat", "Rabbit", "Goldfish", "Hamster", "Turtle", "Kitten", "Puppy", "Bear", "Moose", 
+          "Fox", "Raccoon", "Squirrel", "Owl", "Hedgehog", "Deer", "Wolf", "Beaver", "Tiger", 
+          "Orangutan", "Cockatoo", "Parrot", "Anaconda", "Jaguar", "Macaw", "Toucan", "Panther", 
+          "Capuchin", "Gorilla", "Hippo", "Rhino", "Giraffe", "Snowy Owl", "Polar Bear", "Arctic Fox", 
+          "Baby Penguin", "Penguin", "Arctic Hare", "Seal", "Walrus", "Witch", "Wizard", "Elf", 
+          "Fairy", "Slime Monster", "Jester", "Dragon", "Queen", "Unicorn", "King", "Two of Spades", 
+          "Eat Me", "Drink Me", "Alice", "Queen of Hearts", "Dormouse", "White Rabbit", "Cheshire Cat", 
+          "Caterpillar", "Mad Hatter", "King of Hearts", "Toast", "Cereal", "Yogurt", "Breakfast Combo", 
+          "Orange Juice", "Milk", "Waffle", "Pancakes", "French Toast", "Pizza", "Earth", "Meteor", 
+          "Stars", "Alien", "Planet", "UFO", "Spaceship", "Astronaut", "Lil Bot", "Lovely Bot", 
+          "Angry Bot", "Happy Bot", "Watson", "Buddy Bot", "Brainy Bot", "Mega Bot", "Old Boot", 
+          "Jellyfish", "Clownfish", "Frog", "Crab", "Pufferfish", "Blobfish", "Octopus", "Narwhal", 
+          "Dolphin", "Baby Shark", "Megalodon", "Panda", "Sloth", "Tenrec", "Flamingo", "Zebra", 
+          "Elephant", "Lemur", "Peacock", "Chameleon", "Lion", "Amber", "Dino Egg", "Dino Fossil", 
+          "Stegosaurus", "Velociraptor", "Brontosaurus", "Triceratops", "Tyrannosaurus Rex", "Ice Bat", 
+          "Ice Bug", "Ice Elemental", "Rock Monster", "Dink", "Donk", "Bush Monster", "Yeti", "Dingo", 
+          "Echidna", "Koala", "Kookaburra", "Platypus", "Joey", "Kangaroo", "Crocodile", "Sugar Glider", 
+          "Deckhand", "Buccaneer", "Swashbuckler", "Treasure Map", "Seagull", "Jolly Pirate", "Pirate Ship", 
+          "Kraken", "Captain Blackbeard", "Snow Globe", "Holiday Gift", "Hot Chocolate", "Holiday Wreath", 
+          "Stocking", "Gingerbread Man", "Gingerbread House", "Reindeer", "Snowman", "Santa Claus", "Pumpkin", 
+          "Swamp Monster", "Frankenstein", "Vampire", "Zombie", "Mummy", "Caramel Apple", "Candy Corn", 
+          "Werewolf", "Ghost", "Rainbow Jellyfish", "Blizzard Clownfish", "Lovely Frog", "Lucky Frog", 
+          "Spring Frog", "Poison Dart Frog", "Lucky Hamster", "Chocolate Rabbit", "Spring Rabbit", 
+          "Lemon Crab", "Pirate Pufferfish", "Donut Blobfish", "Crimson Octopus", "Rainbow Narwhal", 
+          "Frost Wreath", "Tropical Globe", "New York Snow Globe", "London Snow Globe", "Japan Snow Globe", 
+          "Egypt Snow Globe", "Paris Snow Globe", "Red Sweater Snowman", "Blue Sweater Snowman", 
+          "Elf Sweater Snowman", "Santa Claws", "Cookies Combo", "Chilly Flamingo", "Snowy Bush Monster", 
+          "Nutcracker Koala", "Sandwich", "Ice Slime", "Frozen Fossil", "Ice Crab", "Rainbow Panda", 
+          "White Peacock", "Tiger Zebra", "Teal Platypus", "Red Astronaut", "Orange Astronaut", 
+          "Yellow Astronaut", "Lime Astronaut", "Green Astronaut", "Cyan Astronaut", "Blue Astronaut", 
+          "Pink Astronaut", "Purple Astronaut", "Brown Astronaut", "Black Astronaut", "Lovely Planet", 
+          "Lovely Peacock", "Haunted Pumpkin", "Pumpkin Cookie", "Ghost Cookie", "Red Gummy Bear", 
+          "Blue Gummy Bear", "Green Gummy Bear", "Chick Chicken", "Chicken Chick", "Raccoon Bandit", 
+          "Owl Sheriff", "Vampire Frog", "Pumpkin King", "Leprechaun", "Anaconda Wizard", "Spooky Pumpkin", 
+          "Spooky Mummy", "Agent Owl", "Master Elf", "Party Pig", "Wise Owl", "Spooky Ghost", 
+          "Phantom King", "Tim the Alien", "Rainbow Astronaut", "Hamsta Claus", "Light Blue", "Black", 
+          "Red", "Purple", "Pink", "Orange", "Lime", "Green", "Teal", "Tan", "Maroon", "Gray", "Mint", 
+          "Salmon", "Burgandy", "Baby Blue", "Dust", "Brown", "Dull Blue", "Yellow", "Blue"
+        ];
+
+        // Populate skin dropdown
+        const skinSelect = document.getElementById("skinSelect");
+        blooks.forEach(skin => {
+            const option = document.createElement("option");
+            option.value = skin;
+            option.textContent = skin;
+            skinSelect.appendChild(option);
+        });
 
         async function joinSameLobby() {
             const gameId = document.getElementById("gcode").value.trim();
@@ -146,10 +172,10 @@
         function log(message) {
             let logBox = document.getElementById("log");
             logBox.innerHTML += `<p>${message}</p>`;
-            logBox.scrollTop = logBox.scrollHeight; // Auto-scroll
+            logBox.scrollTop = logBox.scrollHeight;
         }
 
-        // Add event listener for button click
+        // Attach event listener for bot sending
         document.getElementById("sendBotsBtn").addEventListener("click", joinSameLobby);
     </script>
 </body>
