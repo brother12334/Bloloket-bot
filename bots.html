@@ -27,7 +27,7 @@
         <p>Number of Bots:</p>
         <input type="number" id="numJoins" placeholder="How many bots?" min="1" max="100">
         
-        <p>Select Bot Skin:</p>
+        <p>Select Bot Skin (First Bot Skin Only, Rest Auto-Assigned):</p>
         <select id="skinSelect">
             <option value="Rainbow Astronaut">Rainbow Astronaut</option>
             <option value="Pirate">Pirate</option>
@@ -54,14 +54,16 @@
             const gameId = document.getElementById("gcode").value.trim();
             const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
-            const botSkin = document.getElementById("skinSelect").value;  // Get selected skin
+            const firstBotSkin = document.getElementById("skinSelect").value;  // Get selected skin for first bot
+            const skins = ["Rainbow Astronaut", "Pirate", "Alien", "Skeleton"];  // Array of skins
+            
             let logBox = document.getElementById("log");
             logBox.innerHTML = "";
 
             console.log("Game Code:", gameId);  // Log game code
             console.log("Bot Name Prefix:", baseUsername);  // Log bot name prefix
             console.log("Number of Bots:", numJoins);  // Log number of bots
-            console.log("Selected Bot Skin:", botSkin);  // Log selected skin
+            console.log("Selected First Bot Skin:", firstBotSkin);  // Log selected skin for first bot
 
             if (!gameId || gameId.length !== 7) {
                 log("❌ Invalid Game Code! Must be 7 digits.");
@@ -80,7 +82,10 @@
 
             for (let i = 1; i <= numJoins; i++) {
                 let botName = `${baseUsername}${i}`;
-                console.log(`Sending bot: ${botName}`);  // Log bot being sent
+                let botSkin = skins[(i - 1) % skins.length]; // Cycle through skins
+                if (i === 1) botSkin = firstBotSkin;  // Set first bot's skin to the selected one
+
+                console.log(`Sending bot: ${botName} with skin: ${botSkin}`);  // Log bot being sent
                 
                 try {
                     // Step 1: Get Firebase Token from API
@@ -116,7 +121,7 @@
 
                     // Step 3: Register Bot in Firebase with selected skin
                     await set(ref(db, `${gameId}/c/${botName}`), { 
-                        b: botSkin,  // Use the selected skin
+                        b: botSkin,  // Use the selected skin for each bot
                         rt: true
                     });
 
