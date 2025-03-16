@@ -61,7 +61,7 @@
                 let botName = `${baseUsername}_${i}`;
                 
                 try {
-                    let response = await fetch("https://corsproxy.io/?https://blooketbot.glitch.me/join", {
+                    let response = await fetch("https://thingproxy.freeboard.io/fetch/https://blooketbot.glitch.me/join", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ id: gameId, name: botName })
