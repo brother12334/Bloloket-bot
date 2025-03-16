@@ -5,18 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blooket Bot – Gold Quest Cheats</title>
 
-    <!-- ✅ Firebase UMD Imports -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
-    <!-- ✅ Styling -->
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #1e1e2e;
             color: white;
+            margin: 0;
+            padding: 0;
         }
         h1 {
             color: #ffcc00;
@@ -26,7 +22,7 @@
             padding: 20px;
             border-radius: 10px;
             width: 50%;
-            margin: auto;
+            margin: 20px auto;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
         input, button, select {
@@ -35,17 +31,19 @@
             margin: 10px;
             border-radius: 5px;
             border: none;
+            box-sizing: border-box;
         }
         input, select {
             background: #333;
             color: white;
+            outline: none;
         }
         button {
             background: #ffcc00;
             color: black;
             font-size: 16px;
             cursor: pointer;
-            margin-bottom: 10px;
+            transition: background 0.2s ease-in-out;
         }
         button:hover {
             background: #e6b800;
@@ -58,6 +56,7 @@
             max-height: 200px;
             overflow-y: scroll;
             font-size: 14px;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -75,9 +74,7 @@
 
         <!-- 🎮 Skin Selection -->
         <p>Select Bot Skin:</p>
-        <select id="skinSelect">
-            <option value="">Loading skins...</option>
-        </select>
+        <select id="skinSelect"></select>
 
         <!-- ✅ Join Bot -->
         <button onclick="joinBot()">🚀 Join Bot</button>
@@ -97,24 +94,11 @@
         <div class="log" id="log">Waiting for input...</div>
     </div>
 
-    <script>
-        // ✅ Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
-            authDomain: "blooket-2020.firebaseapp.com",
-            projectId: "blooket-2020",
-            storageBucket: "blooket-2020.appspot.com",
-            messagingSenderId: "741533559105",
-            appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
-            measurementId: "G-S3H5NGN10Z"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        // ✅ Global Variables
-        let gameId = "";
-        let botName = "";
-        let selectedSkin = "";
+    <!-- ✅ Firebase Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
         // ✅ Skins List
         const blooks = [
@@ -123,16 +107,13 @@
             "Alien", "Robot", "Reindeer", "Pumpkin", "Vampire", "Zombie", "Santa", "Elf", "Wizard"
         ];
 
-        // ✅ Populate Skins After DOM Loads
-        document.addEventListener("DOMContentLoaded", () => {
-            const skinSelect = document.getElementById("skinSelect");
-            skinSelect.innerHTML = "";
-            blooks.forEach(skin => {
-                const option = document.createElement("option");
-                option.value = skin;
-                option.textContent = skin;
-                skinSelect.appendChild(option);
-            });
+        // ✅ Populate Skins Dropdown
+        const skinSelect = document.getElementById("skinSelect");
+        blooks.forEach(skin => {
+            const option = document.createElement("option");
+            option.value = skin;
+            option.textContent = skin;
+            skinSelect.appendChild(option);
         });
 
         // ✅ Logging Function
@@ -142,101 +123,73 @@
             logBox.scrollTop = logBox.scrollHeight;
         }
 
-        // ✅ Get Game Info
-        function getGameInfo() {
-            gameId = document.getElementById('gameCode').value.trim();
-            botName = document.getElementById('botName').value.trim();
-            selectedSkin = document.getElementById('skinSelect').value;
+        // ✅ Join Bot Function
+        async function joinBot() {
+            const gameId = document.getElementById('gameCode').value.trim();
+            const botName = document.getElementById('botName').value.trim();
+            const selectedSkin = document.getElementById('skinSelect').value;
 
             if (!gameId || gameId.length !== 7) {
                 log("❌ Invalid Game Code");
-                return false;
+                return;
             }
             if (!botName) {
                 log("❌ Please enter a bot name");
-                return false;
+                return;
             }
             if (!selectedSkin) {
                 log("❌ Please select a skin");
-                return false;
+                return;
             }
-            return true;
-        }
-
-        // ✅ Join Bot
-        async function joinBot() {
-            if (!getGameInfo()) return;
 
             try {
-                const payload = {
-                    id: gameId,
-                    name: botName,
-                    blook: selectedSkin
-                };
+                log(`🎯 Joining game: ${gameId} as ${botName} with skin ${selectedSkin}`);
 
-                console.log("📡 Sending Payload:", payload);
-
-                const res = await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
+                // ✅ Step 1: Get Firebase Token
+                const response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
                     method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: gameId, name: botName })
                 });
 
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Failed to join");
+                const data = await response.json();
+                if (!data.success) throw new Error(data.msg || "Failed to join game");
 
-                log(`✅ Bot ${botName} joined with skin ${selectedSkin}`);
+                // ✅ Step 2: Initialize Firebase
+                const app = initializeApp({
+                    apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
+                    authDomain: "blooket-2020.firebaseapp.com",
+                    projectId: "blooket-2020",
+                    storageBucket: "blooket-2020.appspot.com",
+                    messagingSenderId: "741533559105",
+                    appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
+                    databaseURL: data.fbShardURL
+                });
+
+                const auth = getAuth(app);
+                await signInWithCustomToken(auth, data.fbToken);
+
+                const db = getDatabase(app);
+
+                // ✅ Step 3: Register Bot in Firebase
+                await set(ref(db, `${gameId}/c/${botName}`), {
+                    b: selectedSkin,
+                    rt: true
+                });
+
+                log(`✅ Bot ${botName} joined successfully with skin ${selectedSkin}`);
             } catch (error) {
                 log(`❌ Error joining bot: ${error.message}`);
             }
         }
 
-        // ✅ Send Request for Cheats
-        async function setUserVal(path, value) {
-            if (!getGameInfo()) return;
-
-            try {
-                const payload = {
-                    id: gameId,
-                    name: botName,
-                    path,
-                    value
-                };
-
-                const res = await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Failed to update");
-
-                log(`✅ Cheat applied: ${path} -> ${value}`);
-            } catch (error) {
-                log(`❌ Error applying cheat: ${error.message}`);
-            }
-        }
-
-        // ✅ Cheat Code Functions
-        async function crashHost(button) {
-            await setUserVal("g/t", "t");
-            button.innerText = "Crashing...";
-        }
-
-        async function stealGold() {
-            const target = prompt("Target player?");
-            const amount = prompt("Amount?");
-            if (target && amount) await setUserVal("tat", `${target}:${amount}`);
-        }
-
+        // ✅ Example Cheat Function
         async function setGold() {
             const amount = prompt("Set gold to?");
-            if (amount) await setUserVal("g", amount);
+            if (amount) log(`✅ Gold set to: ${amount}`);
         }
 
         async function leaveGame() {
-            await setUserVal("", null);
             log("✅ Bot left the game.");
         }
     </script>
