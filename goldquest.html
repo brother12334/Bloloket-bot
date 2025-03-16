@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blooket Bot – Gold Quest Cheats</title>
 
+    <!-- ✅ Firebase UMD Imports -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <!-- ✅ Styling -->
     <style>
         body {
@@ -40,6 +45,7 @@
             color: black;
             font-size: 16px;
             cursor: pointer;
+            margin-bottom: 10px;
         }
         button:hover {
             background: #e6b800;
@@ -69,7 +75,9 @@
 
         <!-- 🎮 Skin Selection -->
         <p>Select Bot Skin:</p>
-        <select id="skinSelect"></select>
+        <select id="skinSelect">
+            <option value="">Loading skins...</option>
+        </select>
 
         <!-- ✅ Join Bot -->
         <button onclick="joinBot()">🚀 Join Bot</button>
@@ -89,7 +97,6 @@
         <div class="log" id="log">Waiting for input...</div>
     </div>
 
-    <!-- ✅ Firebase and Cheat Code -->
     <script>
         // ✅ Firebase Config
         const firebaseConfig = {
@@ -104,23 +111,28 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        let botName, gameId, selectedSkin;
+        // ✅ Global Variables
+        let gameId = "";
+        let botName = "";
+        let selectedSkin = "";
 
-        // ✅ Skins List (Copied from Original)
+        // ✅ Skins List
         const blooks = [
             "Chick", "Chicken", "Cow", "Goat", "Horse", "Pig", "Sheep", "Duck", "Dog", "Cat", "Fox",
             "Bear", "Tiger", "Wolf", "Penguin", "Dragon", "King", "Queen", "Jellyfish", "Astronaut",
-            "Alien", "Robot", "Reindeer", "Pumpkin", "Vampire", "Zombie", "Santa", "Elf", "Wizard",
-            "Knight", "Pirate", "Shark", "Narwhal", "Snowman", "Gingerbread Man", "Jack-o-Lantern"
+            "Alien", "Robot", "Reindeer", "Pumpkin", "Vampire", "Zombie", "Santa", "Elf", "Wizard"
         ];
 
-        // ✅ Add Skins to Dropdown
-        const skinSelect = document.getElementById("skinSelect");
-        blooks.forEach(skin => {
-            const option = document.createElement("option");
-            option.value = skin;
-            option.textContent = skin;
-            skinSelect.appendChild(option);
+        // ✅ Populate Skins After DOM Loads
+        document.addEventListener("DOMContentLoaded", () => {
+            const skinSelect = document.getElementById("skinSelect");
+            skinSelect.innerHTML = "";
+            blooks.forEach(skin => {
+                const option = document.createElement("option");
+                option.value = skin;
+                option.textContent = skin;
+                skinSelect.appendChild(option);
+            });
         });
 
         // ✅ Logging Function
@@ -142,6 +154,10 @@
             }
             if (!botName) {
                 log("❌ Please enter a bot name");
+                return false;
+            }
+            if (!selectedSkin) {
+                log("❌ Please select a skin");
                 return false;
             }
             return true;
@@ -171,50 +187,20 @@
             }
         }
 
-        // ✅ Cheat Code Functions (Gold Quest)
+        // ✅ Example Cheat Function
+        async function setGold() {
+            const amount = prompt("Set gold to?");
+            if (amount) await setUserVal("g", amount);
+        }
+
         async function setUserVal(path, value) {
             if (!getGameInfo()) return;
 
-            try {
-                await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: gameId, name: botName, path, value })
-                });
-            } catch (error) {
-                log(`❌ Error: ${error.message}`);
-            }
-        }
-
-        async function crashHost(button) {
-            await setUserVal("g/t", "t");
-            button.innerText = "Crashing";
-        }
-
-        async function freezeScoreboard(button) {
-            await setUserVal("tat/t", "t");
-            button.innerText = "Unfreeze Scoreboard";
-        }
-
-        async function stealGold() {
-            const target = prompt("Target player?");
-            const amount = prompt("Amount?");
-            await setUserVal("tat", `${target}:${amount}`);
-        }
-
-        async function setGold() {
-            const amount = prompt("Set gold to?");
-            await setUserVal("g", amount);
-        }
-
-        async function floodAlertBox() {
-            const text = prompt("Flood text?");
-            await setUserVal("tat", `${botName}:${Date.now()}${text.repeat(100)}`);
-        }
-
-        async function leaveGame() {
-            await setUserVal("", null);
-            log("✅ Bot Left");
+            await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: gameId, name: botName, path, value })
+            });
         }
     </script>
 </body>
