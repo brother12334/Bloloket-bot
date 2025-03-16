@@ -39,11 +39,17 @@
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
         async function joinSameLobby() {
+            console.log("Button clicked!");  // Log the button click
+            
             const gameId = document.getElementById("gcode").value.trim();
             const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
             let logBox = document.getElementById("log");
             logBox.innerHTML = "";
+
+            console.log("Game Code:", gameId);  // Log game code
+            console.log("Bot Name Prefix:", baseUsername);  // Log bot name prefix
+            console.log("Number of Bots:", numJoins);  // Log number of bots
 
             if (!gameId || gameId.length !== 7) {
                 log("❌ Invalid Game Code! Must be 7 digits.");
@@ -62,7 +68,8 @@
 
             for (let i = 1; i <= numJoins; i++) {
                 let botName = `${baseUsername}${i}`;
-
+                console.log(`Sending bot: ${botName}`);  // Log bot being sent
+                
                 try {
                     // Step 1: Get Firebase Token from API
                     let response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
@@ -72,6 +79,8 @@
                     });
 
                     let data = await response.json();
+                    console.log("API Response:", data);  // Log the API response
+
                     if (!data.success) {
                         log(`⚠️ Bot ${botName} failed: ${data.msg || "Unknown Error"}`);
                         continue;
