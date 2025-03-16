@@ -27,12 +27,13 @@
         <p>Number of Bots:</p>
         <input type="number" id="numJoins" placeholder="How many bots?" min="1" max="100">
 
-        <button onclick="joinSameLobby()">🚀 Send Bots!</button>
+        <button id="sendBotsBtn">🚀 Send Bots!</button>
         
         <h3>Status:</h3>
         <div class="log" id="log">Waiting for input...</div>
     </div>
 
+    <!-- Move the script here, right before the closing </body> tag -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
@@ -124,6 +125,9 @@
             logBox.innerHTML += `<p>${message}</p>`;
             logBox.scrollTop = logBox.scrollHeight; // Auto-scroll
         }
+
+        // Add event listener for button click
+        document.getElementById("sendBotsBtn").addEventListener("click", joinSameLobby);
     </script>
 </body>
 </html>
