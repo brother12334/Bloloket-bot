@@ -168,14 +168,18 @@
             if (!getGameInfo()) return;
 
             try {
+                const payload = {
+                    id: gameId,
+                    name: botName,
+                    blook: selectedSkin
+                };
+
+                console.log("📡 Sending Payload:", payload);
+
                 const res = await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        id: gameId,
-                        name: botName,
-                        skin: selectedSkin
-                    })
+                    body: JSON.stringify(payload)
                 });
 
                 const data = await res.json();
@@ -187,20 +191,53 @@
             }
         }
 
-        // ✅ Example Cheat Function
+        // ✅ Send Request for Cheats
+        async function setUserVal(path, value) {
+            if (!getGameInfo()) return;
+
+            try {
+                const payload = {
+                    id: gameId,
+                    name: botName,
+                    path,
+                    value
+                };
+
+                const res = await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Failed to update");
+
+                log(`✅ Cheat applied: ${path} -> ${value}`);
+            } catch (error) {
+                log(`❌ Error applying cheat: ${error.message}`);
+            }
+        }
+
+        // ✅ Cheat Code Functions
+        async function crashHost(button) {
+            await setUserVal("g/t", "t");
+            button.innerText = "Crashing...";
+        }
+
+        async function stealGold() {
+            const target = prompt("Target player?");
+            const amount = prompt("Amount?");
+            if (target && amount) await setUserVal("tat", `${target}:${amount}`);
+        }
+
         async function setGold() {
             const amount = prompt("Set gold to?");
             if (amount) await setUserVal("g", amount);
         }
 
-        async function setUserVal(path, value) {
-            if (!getGameInfo()) return;
-
-            await fetch('https://shard-uttermost-crystal.glitch.me/proxy/join', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: gameId, name: botName, path, value })
-            });
+        async function leaveGame() {
+            await setUserVal("", null);
+            log("✅ Bot left the game.");
         }
     </script>
 </body>
