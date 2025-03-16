@@ -58,8 +58,8 @@
             log(`🎮 Joining Game ${gameId} with ${numJoins} bots...`);
             
             for (let i = 1; i <= numJoins; i++) {
-                let botName = `${baseUsername}_${i}`;
-                
+                let botName = `${baseUsername}_${i}_${Date.now()}`; // Add timestamp to make name unique
+
                 try {
                     let response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
                         method: "POST",
@@ -67,6 +67,7 @@
                         body: JSON.stringify({ id: gameId, name: botName })
                     });
                     let result = await response.json();
+                    console.log(result); // Log the entire response
 
                     if (result.success) {
                         log(`✅ Bot ${botName} joined successfully!`);
@@ -74,7 +75,7 @@
                         log(`⚠️ Bot ${botName} failed: ${result.msg}`);
                     }
                 } catch (error) {
-                    log(`❌ Error sending bot ${botName}: ${error}`);
+                    log(`❌ Error sending bot ${botName}: ${error.message}`);
                 }
 
                 await new Promise(r => setTimeout(r, 500)); // Small delay to avoid spam detection
