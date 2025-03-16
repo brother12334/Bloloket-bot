@@ -153,7 +153,16 @@
                 const data = await response.json();
                 if (!data.success) throw new Error(data.msg);
 
-                const app = initializeApp(data);
+                const app = initializeApp({
+                    apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
+                    authDomain: "blooket-2020.firebaseapp.com",
+                    projectId: "blooket-2020",
+                    storageBucket: "blooket-2020.appspot.com",
+                    messagingSenderId: "741533559105",
+                    appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
+                    databaseURL: data.fbShardURL
+                });
+
                 const auth = getAuth(app);
                 await signInWithCustomToken(auth, data.fbToken);
 
@@ -169,37 +178,26 @@
             }
         }
 
-        // ✅ Set Bot Gold
-        window.setBotGold = async () => {
-            const gold = prompt("Set bot gold to:");
+        // ✅ Set Bot's Gold
+        async function setBotGold() {
+            if (!db) return log("❌ Bot not connected");
+            const gold = prompt("Enter gold amount:");
+            if (gold === null) return;
             await set(ref(db, `${gameId}/c/${botName}/g`), gold);
-            log(`💰 Bot gold set to ${gold}`);
-        };
-
-        // ✅ Send Ad Text
-        window.sendAdText = async () => {
-            const adText = prompt("Enter ad text:");
-            await set(ref(db, `${gameId}/c/${botName}/b`), `Dog:${adText}`);
-            log(`📢 Sent ad: ${adText}`);
-        };
-
-        // ✅ Flood Alert Box
-        window.floodAlertBox = async () => {
-            const text = prompt("Enter text for flood alert:");
-            await set(ref(db, `${gameId}/c/${botName}/tat`), `${Date.now()}${text.repeat(1700)}`);
-            log("🌊 Flood Alert Sent!");
-        };
+            log(`💰 Bot's gold set to ${gold}`);
+        }
 
         // ✅ Leave Game
-        window.leaveGame = async () => {
+        async function leaveGame() {
+            if (!db) return log("❌ Bot not connected");
             await remove(ref(db, `${gameId}/c/${botName}`));
-            log(`🚪 Bot left the game`);
-        };
+            log("🚪 Bot left the game.");
+        }
 
-        // ✅ Expose All Functions to Window
+        // ✅ Attach Functions to Window
         window.joinBot = joinBot;
-        window.crashHost = () => log("💥 Host Crashed!");
-        window.freezeScoreboard = () => log("❄️ Scoreboard Frozen!");
+        window.setBotGold = setBotGold;
+        window.leaveGame = leaveGame;
     </script>
 </body>
 </html>
