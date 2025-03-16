@@ -100,8 +100,8 @@
         });
 
         async function joinSameLobby() {
-            const gameId = document.
-const baseUsername = document.getElementById("gname").value.trim();
+            const gameId = document.getElementById("gcode").value.trim();
+            const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
             const selectedSkin = document.getElementById("skinSelect").value;
             
@@ -230,8 +230,7 @@ const baseUsername = document.getElementById("gname").value.trim();
                         { type: "input", name: "Flood Alert Box", action: (stext) => floodAlertBox(gameId, stext, 'g') },
                     ],
                     Defense2: [
-                        { type: "button", name: "Crash host(defense2)", action: (
-a) => setUserVal(gameId, "d/t", "t", a) },
+                        { type: "button", name: "Crash host(defense2)", action: (a) => setUserVal(gameId, "d/t", "t", a) },
                         { type: "button", name: "Freeze Scoreboard", action: (a) => freezeScoreboard(gameId, a, "r") },
                         { type: "input", name: "Set Damage", action: (amt) => setUserVal(gameId, "d", amt) },
                         { type: "input", name: "Set Round", action: (round) => setUserVal(gameId, "r", round) },
@@ -345,8 +344,7 @@ a) => setUserVal(gameId, "d/t", "t", a) },
             if (element) {
                 const label = document.createElement("label");
                 label.textContent = cheat.name + ": ";
-                label.appendChild(element);
-return label;
+                label.appendChild(element);return label;
             }
             return null;
         }
