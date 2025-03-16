@@ -183,15 +183,15 @@
             }
         }
 
-        // ✅ Example Cheat Function
-        async function setGold() {
+        // ✅ Expose Functions to Window
+        window.joinBot = joinBot;
+        window.setGold = () => {
             const amount = prompt("Set gold to?");
             if (amount) log(`✅ Gold set to: ${amount}`);
-        }
-
-        async function leaveGame() {
+        };
+        window.leaveGame = () => {
             log("✅ Bot left the game.");
-        }
+        };
     </script>
 </body>
 </html>
