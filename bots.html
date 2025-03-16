@@ -28,7 +28,9 @@
         <input type="number" id="numJoins" placeholder="How many bots?" min="1" max="100">
         
         <p>Select Bot Skin:</p>
-        <select id="skinSelect"></select>
+        <select id="skinSelect">
+            <!-- Dynamically add all skins from blooks -->
+        </select>
 
         <button id="sendBotsBtn">🚀 Send Bots!</button>
         
@@ -39,16 +41,52 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-        import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-        // === Blook Skins ===
-        const blooks = [
-            "Chick", "Chicken", "Cow", "Goat", "Horse", "Pig", "Sheep", "Duck", "Dog", "Cat", "Rabbit", 
-            "Bear", "Fox", "Tiger", "Jaguar", "Penguin", "Panda", "Giraffe", "Hippo", "Zebra", "Dragon", 
-            "Elf", "Wizard", "Unicorn", "Santa Claus", "Pumpkin", "Frankenstein", "Vampire", "Ghost", 
-            "King", "Queen", "Alien", "Robot", "Clownfish", "Octopus", "Narwhal", "Dolphin"
+        // Add skins to dropdown dynamically
+        var blooks = [
+          "Chick", "Chicken", "Cow", "Goat", "Horse", "Pig", "Sheep", "Duck", "Alpaca", "Dog",
+          "Cat", "Rabbit", "Goldfish", "Hamster", "Turtle", "Kitten", "Puppy", "Bear", "Moose", 
+          "Fox", "Raccoon", "Squirrel", "Owl", "Hedgehog", "Deer", "Wolf", "Beaver", "Tiger", 
+          "Orangutan", "Cockatoo", "Parrot", "Anaconda", "Jaguar", "Macaw", "Toucan", "Panther", 
+          "Capuchin", "Gorilla", "Hippo", "Rhino", "Giraffe", "Snowy Owl", "Polar Bear", "Arctic Fox", 
+          "Baby Penguin", "Penguin", "Arctic Hare", "Seal", "Walrus", "Witch", "Wizard", "Elf", 
+          "Fairy", "Slime Monster", "Jester", "Dragon", "Queen", "Unicorn", "King", "Two of Spades", 
+          "Eat Me", "Drink Me", "Alice", "Queen of Hearts", "Dormouse", "White Rabbit", "Cheshire Cat", 
+          "Caterpillar", "Mad Hatter", "King of Hearts", "Toast", "Cereal", "Yogurt", "Breakfast Combo", 
+          "Orange Juice", "Milk", "Waffle", "Pancakes", "French Toast", "Pizza", "Earth", "Meteor", 
+          "Stars", "Alien", "Planet", "UFO", "Spaceship", "Astronaut", "Lil Bot", "Lovely Bot", 
+          "Angry Bot", "Happy Bot", "Watson", "Buddy Bot", "Brainy Bot", "Mega Bot", "Old Boot", 
+          "Jellyfish", "Clownfish", "Frog", "Crab", "Pufferfish", "Blobfish", "Octopus", "Narwhal", 
+          "Dolphin", "Baby Shark", "Megalodon", "Panda", "Sloth", "Tenrec", "Flamingo", "Zebra", 
+          "Elephant", "Lemur", "Peacock", "Chameleon", "Lion", "Amber", "Dino Egg", "Dino Fossil", 
+          "Stegosaurus", "Velociraptor", "Brontosaurus", "Triceratops", "Tyrannosaurus Rex", "Ice Bat", 
+          "Ice Bug", "Ice Elemental", "Rock Monster", "Dink", "Donk", "Bush Monster", "Yeti", "Dingo", 
+          "Echidna", "Koala", "Kookaburra", "Platypus", "Joey", "Kangaroo", "Crocodile", "Sugar Glider", 
+          "Deckhand", "Buccaneer", "Swashbuckler", "Treasure Map", "Seagull", "Jolly Pirate", "Pirate Ship", 
+          "Kraken", "Captain Blackbeard", "Snow Globe", "Holiday Gift", "Hot Chocolate", "Holiday Wreath", 
+          "Stocking", "Gingerbread Man", "Gingerbread House", "Reindeer", "Snowman", "Santa Claus", "Pumpkin", 
+          "Swamp Monster", "Frankenstein", "Vampire", "Zombie", "Mummy", "Caramel Apple", "Candy Corn", 
+          "Werewolf", "Ghost", "Rainbow Jellyfish", "Blizzard Clownfish", "Lovely Frog", "Lucky Frog", 
+          "Spring Frog", "Poison Dart Frog", "Lucky Hamster", "Chocolate Rabbit", "Spring Rabbit", 
+          "Lemon Crab", "Pirate Pufferfish", "Donut Blobfish", "Crimson Octopus", "Rainbow Narwhal", 
+          "Frost Wreath", "Tropical Globe", "New York Snow Globe", "London Snow Globe", "Japan Snow Globe", 
+          "Egypt Snow Globe", "Paris Snow Globe", "Red Sweater Snowman", "Blue Sweater Snowman", 
+          "Elf Sweater Snowman", "Santa Claws", "Cookies Combo", "Chilly Flamingo", "Snowy Bush Monster", 
+          "Nutcracker Koala", "Sandwich", "Ice Slime", "Frozen Fossil", "Ice Crab", "Rainbow Panda", 
+          "White Peacock", "Tiger Zebra", "Teal Platypus", "Red Astronaut", "Orange Astronaut", 
+          "Yellow Astronaut", "Lime Astronaut", "Green Astronaut", "Cyan Astronaut", "Blue Astronaut", 
+          "Pink Astronaut", "Purple Astronaut", "Brown Astronaut", "Black Astronaut", "Lovely Planet", 
+          "Lovely Peacock", "Haunted Pumpkin", "Pumpkin Cookie", "Ghost Cookie", "Red Gummy Bear", 
+          "Blue Gummy Bear", "Green Gummy Bear", "Chick Chicken", "Chicken Chick", "Raccoon Bandit", 
+          "Owl Sheriff", "Vampire Frog", "Pumpkin King", "Leprechaun", "Anaconda Wizard", "Spooky Pumpkin", 
+          "Spooky Mummy", "Agent Owl", "Master Elf", "Party Pig", "Wise Owl", "Spooky Ghost", 
+          "Phantom King", "Tim the Alien", "Rainbow Astronaut", "Hamsta Claus", "Light Blue", "Black", 
+          "Red", "Purple", "Pink", "Orange", "Lime", "Green", "Teal", "Tan", "Maroon", "Gray", "Mint", 
+          "Salmon", "Burgandy", "Baby Blue", "Dust", "Brown", "Dull Blue", "Yellow", "Blue"
         ];
 
+        // Populate skin dropdown
         const skinSelect = document.getElementById("skinSelect");
         blooks.forEach(skin => {
             const option = document.createElement("option");
@@ -57,99 +95,88 @@
             skinSelect.appendChild(option);
         });
 
-        let db; // Firebase reference
-
-        async function joinBots() {
+        async function joinSameLobby() {
             const gameId = document.getElementById("gcode").value.trim();
             const baseUsername = document.getElementById("gname").value.trim();
             const numJoins = parseInt(document.getElementById("numJoins").value, 10);
-            const selectedSkin = document.getElementById("skinSelect").value;
+            const selectedSkin = document.getElementById("skinSelect").value; // Get selected skin
+            
+            let logBox = document.getElementById("log");
+            logBox.innerHTML = "";
 
-            if (!gameId || gameId.length !== 7) return log("❌ Invalid Game Code!");
-            if (!baseUsername) return log("❌ Please enter a bot name prefix.");
-            if (isNaN(numJoins) || numJoins <= 0 || numJoins > 100) return log("❌ Enter a valid bot count (1-100).");
-
-            log(`🚀 Sending ${numJoins} bots to Game ${gameId}...`);
-
-            try {
-                // === Step 1: Get Token and Shard URL ===
-                const response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "User-Agent": getRandomUserAgent(),
-                        "Connection": "keep-alive"
-                    },
-                    body: JSON.stringify({
-                        gameId: gameId,
-                        name: `${baseUsername}1`
-                    })
-                });
-
-                const data = await response.json();
-                console.log("Server Response:", data);
-
-                if (!data.success) throw new Error(data.msg || "Unknown error");
-
-                // === Step 2: Initialize Firebase ===
-                await initFirebase(data.fbShardURL, data.fbToken);
-
-                // === Step 3: Register Bots ===
-                await Promise.all(
-                    Array.from({ length: numJoins }, (_, i) =>
-                        new Promise((resolve) => {
-                            setTimeout(async () => {
-                                try {
-                                    const updates = {};
-                                    updates[`${gameId}/c/${baseUsername}${i + 1}`] = {
-                                        b: selectedSkin,
-                                        rt: true
-                                    };
-                                    await update(ref(db), updates);
-                                    log(`✅ Bot ${i + 1} joined successfully!`);
-                                } catch (err) {
-                                    log(`❌ Failed to send bot ${i + 1}: ${err.message}`);
-                                }
-                                resolve();
-                            }, Math.random() * 100 + 20); // 20ms to 120ms delay
-                        })
-                    )
-                );
-
-                log(`🎉 All ${numJoins} bots sent!`);
-            } catch (error) {
-                log(`❌ Error: ${error.message}`);
+            if (!gameId || gameId.length !== 7) {
+                log("❌ Invalid Game Code! Must be 7 digits.");
+                return;
             }
-        }
+            if (!baseUsername) {
+                log("❌ Please enter a bot name prefix.");
+                return;
+            }
+            if (isNaN(numJoins) || numJoins <= 0 || numJoins > 100) {
+                log("❌ Enter a valid bot count (1-100).");
+                return;
+            }
 
-        async function initFirebase(shardURL, token) {
-            const app = initializeApp({
-                apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
-                authDomain: "blooket-2020.firebaseapp.com",
-                databaseURL: shardURL
-            });
+            log(🎮 Joining Game ${gameId} with ${numJoins} bots...);
 
-            const auth = getAuth(app);
-            await signInWithCustomToken(auth, token);
-            db = getDatabase(app);
-        }
+            for (let i = 1; i <= numJoins; i++) {
+                let botName = ${baseUsername}${i};
 
-        function getRandomUserAgent() {
-            const agents = [
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
-            ];
-            return agents[Math.floor(Math.random() * agents.length)];
+                try {
+                    // Step 1: Get Firebase Token from API
+                    let response = await fetch("https://shard-uttermost-crystal.glitch.me/proxy/https://blooketbot.glitch.me/join", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: gameId, name: botName })
+                    });
+
+                    let data = await response.json();
+                    if (!data.success) {
+                        log(⚠️ Bot ${botName} failed: ${data.msg || "Unknown Error"});
+                        continue;
+                    }
+
+                    // Step 2: Connect to Firebase
+                    const liveApp = initializeApp({
+                        apiKey: "AIzaSyCA-cTOnX19f6LFnDVVsHXya3k6ByP_MnU",
+                        authDomain: "blooket-2020.firebaseapp.com",
+                        projectId: "blooket-2020",
+                        storageBucket: "blooket-2020.appspot.com",
+                        messagingSenderId: "741533559105",
+                        appId: "1:741533559105:web:b8cbb10e6123f2913519c0",
+                        measurementId: "G-S3H5NGN10Z",
+                        databaseURL: data.fbShardURL
+                    });
+
+                    const auth = getAuth(liveApp);
+                    await signInWithCustomToken(auth, data.fbToken);
+                    const db = getDatabase(liveApp);
+
+                    // Step 3: Register Bot in Firebase with selected skin
+                    await set(ref(db, ${gameId}/c/${botName}), { 
+                        b: selectedSkin,  // Use the selected skin for all bots
+                        rt: true
+                    });
+
+                    log(✅ Bot ${botName} joined successfully with skin ${selectedSkin}!);
+                } catch (error) {
+                    log(❌ Error sending bot ${botName}: ${error.message});
+                }
+
+                await new Promise(r => setTimeout(r, 1000)); // Increased delay to prevent spam detection
+            }
+
+            log("🎉 All bots sent!");
         }
 
         function log(message) {
-            const logBox = document.getElementById("log");
-            logBox.innerHTML += `<p>${message}</p>`;
+            let logBox = document.getElementById("log");
+            logBox.innerHTML += <p>${message}</p>;
             logBox.scrollTop = logBox.scrollHeight;
         }
 
-        document.getElementById("sendBotsBtn").addEventListener("click", joinBots);
+        // Attach event listener for bot sending
+        document.getElementById("sendBotsBtn").addEventListener("click", joinSameLobby);
     </script>
 </body>
 </html>
